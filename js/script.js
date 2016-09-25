@@ -12,8 +12,17 @@ function loadData() {
     $nytElem.text("");
 
     // load streetview
+    var street = $("#street").val();
+    var city = $("#city").val();
+    var windowWidth = $(window).width()
+    var windowHeight = $(window).height()
+    var streetviewUrl = "url('https://maps.googleapis.com/maps/api/streetview?size=" + windowWidth + 'x' + windowHeight + "&location=" + street + ", " + city + "')";
+    $body.css("background-size", windowWidth + "px " + windowHeight + "px");
+    $body.css("background-image", streetviewUrl);
+
 
     // YOUR CODE GOES HERE!
+
 
     return false;
 };
