@@ -30,8 +30,7 @@ function loadData() {
         $("#nytimes-header").text('New York Times Articles About ' + city);
 
          $.each( data.response.docs, function( key, val ) {
-            console.log(val);
-        $('<li class="article"><a href="' + val.web_url + '" target="_blank">' + val.headline.main + '</a><p>' + val.snippet + '</p></li>').appendTo($("#nytimes-articles"));
+           $('<li class="article"><a href="' + val.web_url + '" target="_blank">' + val.headline.main + '</a><p>' + val.snippet + '</p></li>').appendTo($("#nytimes-articles"));
          });
 
 
@@ -41,7 +40,26 @@ function loadData() {
     });
 
 
+    // Wikipedia Page Ajax Request
+    $wikiElem = $('#wikipedia-links');
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text("failed to get wikipedia resources");
+    }, 8000);
 
+    $.ajax( {
+    url: 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&utf8=1&format=json&callback=wikiCallback',
+    dataType: 'jsonp',
+    success: function(data) {
+        console.log(data);
+        var wikiArticles = data[1];
+        for (i = 0; i < wikiArticles.length; i++) {
+            $('<li><a href="https://en.wikipedia.org/wiki/' + wikiArticles[i] + '" target="_blank">' + wikiArticles[i] + '</a></li>').appendTo($wikiElem);
+        }
+
+        clearTimeout(wikiRequestTimeout);
+
+    }
+});
 
 
 
